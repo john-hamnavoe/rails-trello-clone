@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Boards</h1>
 
 <table>
@@ -13,10 +11,7 @@
   <tbody>
     <% @boards.each do |board| %>
       <tr>
-        <td><%= board.name %></td>
-        <td><%= link_to 'Show', board %></td>
-        <td><%= link_to 'Edit', edit_board_path(board) %></td>
-        <td><%= link_to 'Destroy', board, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to board.name, board %></td>
       </tr>
     <% end %>
   </tbody>

@@ -1,24 +1,31 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Very basic trello clone.
 
-Things you may want to cover:
+Uses:
 
-* Ruby version
+* Ruby version 2.7.0
 
-* System dependencies
+* Rails Version 6.1.0
 
-* Configuration
+* Stimulus 2.0
 
-* Database creation
+* Sortable js
 
-* Database initialization
+* Bootstrap
 
-* How to run the test suite
+* acts_as_list gem
 
-* Services (job queues, cache servers, search engines, etc.)
+* Devise - there but not hooked up.
 
-* Deployment instructions
+* Database Postgresql 
 
-* ...
+  * rails db:migrate
+
+* No tests 
+
+* Run:
+
+  * Deploy Database
+  * rails s
+

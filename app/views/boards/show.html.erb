@@ -1,27 +1,34 @@
-<p id="notice"><%= notice %></p>
 <p>
   <strong>Name:</strong>
-  <%= @board.name %>
+  <%= link_to @board.name, edit_board_path(@board) %>
 </p>
-<%= link_to 'Edit', edit_board_path(@board) %>
-<hr>
 <%= link_to 'Add New List', new_board_list_path(@board) %>
 <hr>
 <!-- Lists container -->
 <section class="lists-container">
   <% @board.lists.sort_by(&:position).each do |list| %>
     <div class="list" data-controller="dragv">
-      <h3 class="list-title"><%= list.name %></h3>
-        <ul class="list-items">
-          <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
-            <% list.tasks.sort_by(&:position).each do |task| %>
-              <li data-id="<%= task.id %>"><%= task.name %></li>
-            <% end %>
-          </div>
-        </ul>
-      <button class="add-card-btn btn">Add a card</button>
+      <div class="text-center mb-4">
+        <span>
+          <% unless list.position == 1 %>
+            <%= link_to "<", list_move_left_path(list.id), method: :patch, remote: true, style:"float: left;text-decoration:none;"%>
+          <% end %>
+          <span><b><%= list.name %></b></span>
+          <% unless list.position ==  @board.lists.length %>
+            <%= link_to ">", list_move_right_path(list.id), method: :patch, remote: true, style:"float: right;text-decoration:none;"%>
+          <% end %>
+        </span>
+      </div>    
+
+      <ul class="list-items">
+        <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
+          <% list.tasks.sort_by(&:position).each do |task| %>
+            <li data-id="<%= task.id %>"><%= task.name %></li>
+          <% end %>
+        </div>
+      </ul>
+      <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
     </div>
   <% end %>
-  <button class="add-list-btn btn">Add a list</button>
 </section>
 <!-- End of lists container -->
