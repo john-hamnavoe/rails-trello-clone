@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Boards</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @boards.each do |board| %>
+      <tr>
+        <td><%= board.name %></td>
+        <td><%= link_to 'Show', board %></td>
+        <td><%= link_to 'Edit', edit_board_path(board) %></td>
+        <td><%= link_to 'Destroy', board, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Board', new_board_path %>

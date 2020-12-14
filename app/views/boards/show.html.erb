@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+<p>
+  <strong>Name:</strong>
+  <%= @board.name %>
+</p>
+<%= link_to 'Edit', edit_board_path(@board) %>
+<hr>
+<%= link_to 'Add New List', new_board_list_path(@board) %>
+<hr>
+<!-- Lists container -->
+<section class="lists-container">
+  <% @board.lists.sort_by(&:position).each do |list| %>
+    <div class="list" data-controller="dragv">
+      <h3 class="list-title"><%= list.name %></h3>
+        <ul class="list-items">
+          <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
+            <% list.tasks.sort_by(&:position).each do |task| %>
+              <li data-id="<%= task.id %>"><%= task.name %></li>
+            <% end %>
+          </div>
+        </ul>
+      <button class="add-card-btn btn">Add a card</button>
+    </div>
+  <% end %>
+  <button class="add-list-btn btn">Add a list</button>
+</section>
+<!-- End of lists container -->

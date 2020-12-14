@@ -1,0 +1,37 @@
+<div class="base">
+  <div class="board">
+    <div class="board-header">
+      <div class="left">
+        <div class="board-header-text"><%= @board.name %></div>
+      </div>
+    </div>
+    <div class="board-lists">
+        <% @board.lists.sort_by(&:position).each do |list| %>
+
+          <div class="board-list">
+            <div class="text-center">
+              <span>
+                <% unless list.position == 1 %>
+                  <%= link_to "<", list_move_left_path(list.id), method: :patch, remote: true, style:"float: left;"%>
+                <% end %>
+                <span ><%= list.name %></span>
+                <% unless list.position ==  @board.lists.length %>
+                  <%= link_to ">", list_move_right_path(list.id), method: :patch, remote: true, style:"float: right;"%>
+                <% end %>
+              </span>
+            </div>
+            <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
+              <% list.tasks.sort_by(&:position).each do |task| %>
+                <div data-id="<%= task.id %>" class="card">
+                  <%= task.name %>
+                </div>
+              <% end %>
+            </div>
+            <div class="add-card">
+              <%= link_to "+ Add another card", new_list_task_path(list) %>
+            </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</div>
