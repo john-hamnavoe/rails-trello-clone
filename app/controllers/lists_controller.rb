@@ -1,5 +1,7 @@
 class ListsController < ApplicationController
+  include Turbo::Broadcastable
   before_action :set_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_board, only: [:new, :create]
 
   # GET /lists
   # GET /lists.json
@@ -14,8 +16,7 @@ class ListsController < ApplicationController
 
   # GET /lists/new
   def new
-    @list = List.new
-    @board_id = params[:board_id]
+    @list = @board.lists.new
   end
 
   # GET /lists/1/edit
@@ -25,11 +26,11 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    @list = List.new(list_params)
-    @list.board_id = params[:board_id]
+    @list = @board.lists.new(list_params)
 
     respond_to do |format|
       if @list.save
+        format.turbo_stream { broadcast_lists_update }
         format.html { redirect_to board_path(@list.board_id), notice: 'List was successfully created.' }
         format.json { render :show, status: :created, location: @list }
       else
@@ -67,14 +68,16 @@ class ListsController < ApplicationController
     @list = List.find_by(id: params[:list_id])
     @list.position -= 1
     @list.save
-    redirect_to board_path(@list.board_id)
+
+    broadcast_lists_update
   end
 
   def move_right
     @list = List.find_by(id: params[:list_id])
     @list.position += 1
     @list.save
-    redirect_to board_path(@list.board_id)
+    
+    broadcast_lists_update
   end  
 
   private
@@ -83,8 +86,17 @@ class ListsController < ApplicationController
       @list = List.find(params[:id])
     end
 
+    def set_board
+      @board = Board.find(params[:board_id])
+    end    
+
     # Only allow a list of trusted parameters through.
     def list_params
       params.require(:list).permit(:name, :position)
+    end
+
+    def broadcast_lists_update
+      html = ApplicationController.render partial: "lists/list", collection: @list.board.lists.sort_by(&:position)
+      ListsChannel.broadcast_to @list.board, lists: html
     end
 end

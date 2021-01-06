@@ -1,34 +1,18 @@
-<p>
-  <strong>Name:</strong>
-  <%= link_to @board.name, edit_board_path(@board) %>
-</p>
-<%= link_to 'Add New List', new_board_list_path(@board) %>
-<hr>
-<!-- Lists container -->
-<section class="lists-container">
-  <% @board.lists.sort_by(&:position).each do |list| %>
-    <div class="list" data-controller="dragv">
-      <div class="text-center mb-4">
-        <span>
-          <% unless list.position == 1 %>
-            <%= link_to "<", list_move_left_path(list.id), method: :patch, remote: true, style:"float: left;text-decoration:none;"%>
-          <% end %>
-          <span><b><%= list.name %></b></span>
-          <% unless list.position ==  @board.lists.length %>
-            <%= link_to ">", list_move_right_path(list.id), method: :patch, remote: true, style:"float: right;text-decoration:none;"%>
-          <% end %>
-        </span>
-      </div>    
+<%= turbo_stream_from @board %>
 
-      <ul class="list-items">
-        <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
-          <% list.tasks.sort_by(&:position).each do |task| %>
-            <li data-id="<%= task.id %>"><%= task.name %></li>
-          <% end %>
-        </div>
-      </ul>
-      <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
-    </div>
-  <% end %>
-</section>
+<%= turbo_frame_tag "board" do %>
+  <%= render @board %>
+<% end %>
+<br>
+<br>
+<%# link_to 'Add New List', new_board_list_path(@board) %>
+<%= turbo_frame_tag "new_list", src: new_board_list_path(@board), target: :_top %>
+<hr> 
+<!-- Lists container -->
+
+<div data-controller="lists" data-lists-id="<%= @board.id %>">
+  <section class="lists-container" data-lists-target="lists">
+    <%= render @board.lists.sort_by(&:position) %>
+  </section>
+</div>
 <!-- End of lists container -->

@@ -14,6 +14,10 @@ import Rails from '@rails/ujs';
 export default class extends Controller {
 
   connect() {
+    this.initialise()
+  }
+
+  initialise() {
     this.sortable = Sortable.create(this.element, {
       group: "tasks",
       onEnd: this.end.bind(this)
@@ -21,12 +25,6 @@ export default class extends Controller {
   }
 
   end(event) {
-    console.log("this", event)
-    console.log("newIndex", event.newIndex)
-    console.log("item", event.item)
-    console.log("item_id", event.item.dataset.id)
-    console.log("from", event.from)
-    console.log("to", event.to.dataset.id)  
     const id = event.item.dataset.id
     const to_id = event.to.dataset.id
     let data = new FormData()

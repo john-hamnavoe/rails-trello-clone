@@ -1,0 +1,30 @@
+<%= content_tag :div, id: dom_id(list) do %>
+  <div class="list">
+    <div class="text-center mb-4">
+      <span>
+        <% unless list.position == 1 %>
+          <%= link_to "<", list_move_left_path(list.id), method: :patch, style:"float: left;text-decoration:none;"%>
+        <% end %>
+        <%= content_tag :span, id: dom_id(list), "data-id": list.id do %>
+          <%= turbo_stream_from list %>
+          <%= turbo_frame_tag "list" do %>
+            <%= link_to list.name, edit_list_path(list) %>
+          <% end %>
+        <% end %>        
+        <% unless list.position ==  list.board.lists.length %>
+          <%= link_to ">", list_move_right_path(list.id), method: :patch, style:"float: right;text-decoration:none;"%>
+        <% end %>
+      </span>
+    </div>    
+
+    <ul class="list-items">
+      <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
+        <% list.tasks.sort_by(&:position).each do |task| %>
+          <%= render "tasks/task", task: task %>
+        <% end %>
+      </div>
+    </ul>
+    <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
+  </div>
+<% end %>
+ 

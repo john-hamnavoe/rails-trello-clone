@@ -1,5 +1,3 @@
-<h1>New List</h1>
-
-<%= render 'form', list: @list %>
-
-<%= link_to 'Back', board_path(@board_id) %>
+<%= turbo_frame_tag "new_list" do %>
+  <%= render 'form', list: @list, board: @board %>
+<% end %>

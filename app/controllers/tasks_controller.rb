@@ -31,10 +31,13 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to board_path(@list.board_id), notice: 'Task was successfully created.' }
+        format.html do 
+          broadcast_lists_update
+          redirect_to board_path(@list.board_id), notice: 'Task was successfully created.'           
+        end
         format.json { render :show, status: :created, location: @task }
       else
-        format.html { render :new }
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -48,7 +51,7 @@ class TasksController < ApplicationController
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
-        format.html { render :edit }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -70,6 +73,8 @@ class TasksController < ApplicationController
     @task.list_id = to_list
     @task.position = params[:position]
     @task.save
+
+    broadcast_lists_update
   end
 
   private
@@ -81,5 +86,10 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.require(:task).permit(:name, :list_id, :position)
+    end
+
+    def broadcast_lists_update
+      html = ApplicationController.render partial: "lists/list", collection: @task.list.board.lists.sort_by(&:position)
+      ListsChannel.broadcast_to @task.list.board, lists: html
     end
 end

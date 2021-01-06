@@ -18,6 +18,10 @@ Uses:
 
 * Devise - there but not hooked up.
 
+* Hotwire - turbo
+
+* Action Cable
+
 * Database Postgresql 
 
   * rails db:migrate

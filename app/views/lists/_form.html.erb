@@ -1,4 +1,6 @@
-<%= form_with(model: list, url: board_lists_path) do |form| %>
+  <%= form_with model: [board, list],
+        data: { controller: 'reset-form', action: 'turbo:submit-end->reset-form#reset' } do |form| %>
+  
   <% if list.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
@@ -13,10 +15,10 @@
 
   <div class="form-group">
     <%= form.label :name %>
-    <%= form.text_field :name, class: "form-control", style:"width:25%" %>
+    <%= form.text_field :name, required: true, class: "form-control", style:"width:25%" %>
   </div>
 
   <div class="actions">
-    <%= form.submit class:"btn btn-primary" %>
+    <%= form.submit class: "btn btn-primary", 'data-reset-form-target': 'button'  %>
   </div>
 <% end %>

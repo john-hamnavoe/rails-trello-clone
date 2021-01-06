@@ -32,9 +32,9 @@
 <% end %>
 <%= auto_discovery_link_tag(:rss, content_for(:rss), {title: "RSS Feed"}) if content_for?(:rss) %>
 <%= auto_discovery_link_tag(:atom, content_for(:atom), {title: "Atom Feed"}) if content_for?(:atom) %>
-<%= stylesheet_pack_tag 'application', preload: true, media: 'all', 'data-turbolinks-track': 'reload' %>
-<%= stylesheet_link_tag 'boards', preload: true, media: 'all', 'data-turbolinks-track': 'reload' %>
-<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+<%= stylesheet_pack_tag 'application', preload: true, media: 'all', 'data-turbo-track': 'reload' %>
+<%= stylesheet_link_tag 'boards', preload: true, media: 'all', 'data-turbo-track': 'reload' %>
+<%= javascript_pack_tag 'application', 'data-turbo-track': 'reload' %>
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 <%= action_cable_meta_tag %>

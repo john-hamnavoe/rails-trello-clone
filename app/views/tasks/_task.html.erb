@@ -1,0 +1,7 @@
+
+<%= content_tag :li, id: dom_id(task), "data-id": task.id do %>
+  <%= turbo_stream_from task %>
+  <%= turbo_frame_tag "task" do %>
+    <%= link_to task.name, edit_task_path(task) %>
+  <% end %>
+<% end %>

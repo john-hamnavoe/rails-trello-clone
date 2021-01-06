@@ -1,6 +1,25 @@
-<h1>Editing List</h1>
+<%= turbo_frame_tag "list" do %>
+  <%= form_with model: @list do |form| %>
+    <% if @list.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@list.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-<%= render 'form', list: @list %>
+        <ul>
+          <% @list.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-<%= link_to 'Show', @list %> |
-<%= link_to 'Back', lists_path %>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, required: true, autofocus: true %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit class:"btn btn-sm btn-primary" %>
+    </div>
+  <% end %>
+<% end %>
+

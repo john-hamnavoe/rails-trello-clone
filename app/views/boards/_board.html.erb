@@ -1,0 +1,6 @@
+  <%= content_tag :div, id: dom_id(board) do %>
+    <p>
+      <strong>Name:</strong>
+      <%= link_to board.name, edit_board_path(board) %>
+    </p>
+  <% end %>
