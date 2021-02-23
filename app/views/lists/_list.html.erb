@@ -1,6 +1,6 @@
 <%= content_tag :div, id: dom_id(list) do %>
   <div class="list">
-    <div class="text-center mb-4">
+    <div class="text-center mt-1 mb-4">
       <span>
         <% unless list.position == 1 %>
           <%= link_to "<", list_move_left_path(list.id), method: :patch, style:"float: left;text-decoration:none;"%>
@@ -24,7 +24,9 @@
         <% end %>
       </div>
     </ul>
-    <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
+    <%= turbo_frame_tag "task" do %>    
+      <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
+    <% end %>
   </div>
 <% end %>
  

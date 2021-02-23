@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  include ListsConcern
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
@@ -14,8 +15,8 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
     @list = List.find_by(id: params[:list_id])
+    @task = Task.new(list: @list)
   end
 
   # GET /tasks/1/edit
@@ -25,16 +26,12 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @list = List.find_by(id: params[:list_id])
     @task = Task.new(task_params)
-    @task.list = @list 
 
     respond_to do |format|
       if @task.save
-        format.html do 
-          broadcast_lists_update
-          redirect_to board_path(@list.board_id), notice: 'Task was successfully created.'           
-        end
+        format.turbo_stream { broadcast_lists_update }
+        format.html { redirect_to board_path(@list.board_id), notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -86,10 +83,5 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.require(:task).permit(:name, :list_id, :position)
-    end
-
-    def broadcast_lists_update
-      html = ApplicationController.render partial: "lists/list", collection: @task.list.board.lists.sort_by(&:position)
-      ListsChannel.broadcast_to @task.list.board, lists: html
     end
 end

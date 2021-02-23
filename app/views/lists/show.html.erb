@@ -1,19 +1,5 @@
-<p id="notice"><%= notice %></p>
+<%= turbo_stream_from @list %>
 
-<p>
-  <strong>Board:</strong>
-  <%= @list.board_id %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @list.name %>
-</p>
-
-<p>
-  <strong>Position:</strong>
-  <%= @list.position %>
-</p>
-
-<%= link_to 'Edit', edit_list_path(@list) %> |
-<%= link_to 'Back', lists_path %>
+<%= turbo_frame_tag dom_id(@list) do %>
+  <%= render @list %>
+<% end %>

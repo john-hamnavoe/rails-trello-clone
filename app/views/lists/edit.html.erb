@@ -12,13 +12,14 @@
       </div>
     <% end %>
 
-    <div class="field">
+    <div class="field mt-1">
       <%= form.label :name %>
       <%= form.text_field :name, required: true, autofocus: true %>
     </div>
 
     <div class="actions">
       <%= form.submit class:"btn btn-sm btn-primary" %>
+      <%= link_to "Cancel", @list if form.object.persisted? %>
     </div>
   <% end %>
 <% end %>

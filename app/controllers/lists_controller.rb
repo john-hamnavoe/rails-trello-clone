@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ListsController < ApplicationController
-  include Turbo::Broadcastable
-  before_action :set_list, only: [:show, :edit, :update, :destroy]
-  before_action :set_board, only: [:new, :create]
+  include ListsConcern
+  before_action :set_list, only: %i[show edit update destroy]
+  before_action :set_board, only: %i[new create]
 
   # GET /lists
   # GET /lists.json
@@ -76,27 +78,23 @@ class ListsController < ApplicationController
     @list = List.find_by(id: params[:list_id])
     @list.position += 1
     @list.save
-    
+
     broadcast_lists_update
-  end  
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_list
-      @list = List.find(params[:id])
-    end
 
-    def set_board
-      @board = Board.find(params[:board_id])
-    end    
+  # Use callbacks to share common setup or constraints between actions.
+  def set_list
+    @list = List.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def list_params
-      params.require(:list).permit(:name, :position)
-    end
+  def set_board
+    @board = Board.find(params[:board_id])
+  end
 
-    def broadcast_lists_update
-      html = ApplicationController.render partial: "lists/list", collection: @list.board.lists.sort_by(&:position)
-      ListsChannel.broadcast_to @list.board, lists: html
-    end
+  # Only allow a list of trusted parameters through.
+  def list_params
+    params.require(:list).permit(:name, :position)
+  end
 end

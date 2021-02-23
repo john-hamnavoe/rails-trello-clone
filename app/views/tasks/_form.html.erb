@@ -1,22 +1,23 @@
-<%= form_with(model: task, url: list_tasks_path) do |form| %>
-  <% if task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+  <%= form_with model: task do |form| %>
+    <% if task.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-      <ul>
-        <% task.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% task.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <%= form.hidden_field :list_id, value: task.list_id %>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, required: true, autofocus: true %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit class:"btn btn-sm btn-primary" %>
+      <%= link_to "Cancel", task if form.object.persisted? %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, autofocus: true %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit class:"btn btn-primary" %>
-  </div>
-<% end %>
