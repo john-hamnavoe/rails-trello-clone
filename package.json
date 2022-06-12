@@ -1,6 +1,9 @@
 {
   "name": "trello-stimulus",
   "private": true,
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@hotwired/turbo-rails": "^7.0.0-beta.3",
     "@rails/actioncable": "^6.0.0",
