@@ -30,8 +30,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.turbo_stream { broadcast_lists_update }
-        format.html { redirect_to board_path(@list.board_id), notice: 'Task was successfully created.' }
+        broadcast_lists_update
+        format.html { head :no_content }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }
