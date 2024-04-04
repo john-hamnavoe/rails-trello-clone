@@ -20,7 +20,7 @@ Uses:
 
 * acts_as_list
 
-* Turbo 8 - Morhping
+* Turbo 8 - Morphing
 
 * Database Postgresql 
 
