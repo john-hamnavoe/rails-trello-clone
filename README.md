@@ -2,25 +2,25 @@
 
 Very basic trello clone. [See here](https://yq2xz.hatchboxapp.com/)
 
+Makes use of new turbo morphing feature.
+
+Problem with refresh if editor open and someone moves card will close maybe do something with ```turbo_permanent: ""```. However some problems with refresh in frames, will revisit if have time. Noticed in this [introduction](https://dev.37signals.com/a-happier-happy-path-in-turbo-with-morphing/) they have modals which maybe makes it easier. 
+
 Uses:
 
-* Ruby version 2.7.0
+* Ruby version 3.2.2
 
-* Rails Version 6.1.0
+* Rails Version 7.1
 
-* Stimulus 2.0
+* Stimulus
 
 * Sortable js
 
-* Bootstrap
+* Tailwind
 
-* acts_as_list gem
+* acts_as_list
 
-* Devise - there but not hooked up.
-
-* Hotwire - turbo
-
-* Action Cable
+* Turbo 8 - Morhping
 
 * Database Postgresql 
 
@@ -30,6 +30,6 @@ Uses:
 
 * Run:
 
-  * Deploy Database
-  * rails s
+  * Deploy Database ```rails db:create db:migrate```
+  * ./bin/dev
 

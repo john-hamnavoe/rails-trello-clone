@@ -1,26 +1,8 @@
-<%= turbo_frame_tag "list" do %>
-  <%= form_with model: @list do |form| %>
-    <% if @list.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@list.errors.count, "error") %> prohibited this task from being saved:</h2>
 
-        <ul>
-          <% @list.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
 
-    <div class="field mt-1">
-      <%= form.label :name %>
-      <%= form.text_field :name, required: true, autofocus: true %>
-    </div>
-
-    <div class="actions">
-      <%= form.submit class:"btn btn-sm btn-primary" %>
-      <%= link_to "Cancel", @list if form.object.persisted? %>
-    </div>
-  <% end %>
+<%= turbo_frame_tag dom_id(@list) do %>
+  <div class="bg-white rounded-lg shadow-md border-blue-200 border-2 p-2 max-w-xl">
+    <h1 class="text-base font-semibold text-gray-900">Update list</h1>
+    <%= render 'form', list: @list, board: @board, cancel_path: board_path(@list.board), data: {turbo_frame: :_top}   %>
+  </div>
 <% end %>
-

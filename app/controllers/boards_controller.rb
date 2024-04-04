@@ -28,7 +28,7 @@ class BoardsController < ApplicationController
 
     respond_to do |format|
       if @board.save
-        format.html { redirect_to @board, notice: 'Board was successfully created.' }
+        format.html { redirect_to @board }
         format.json { render :show, status: :created, location: @board }
       else
         format.html { render :new }
@@ -42,11 +42,11 @@ class BoardsController < ApplicationController
   def update
     respond_to do |format|
       if @board.update(board_params)
-        format.html { redirect_to @board, notice: 'Board was successfully updated.' }
+        format.html { redirect_to @board }
         format.json { render :show, status: :ok, location: @board }
       else
         format.html { render :edit }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("board-form", partial: "form", locals: {board: @board, cancel_path: board_path(@board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
       end
     end
   end
@@ -56,19 +56,20 @@ class BoardsController < ApplicationController
   def destroy
     @board.destroy
     respond_to do |format|
-      format.html { redirect_to boards_url, notice: 'Board was successfully destroyed.' }
+      format.html { redirect_to boards_url, notice: "Board was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_board
-      @board = Board.eager_load(lists: :tasks).find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def board_params
-      params.require(:board).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_board
+    @board = Board.eager_load(lists: :tasks).find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def board_params
+    params.require(:board).permit(:name)
+  end
 end

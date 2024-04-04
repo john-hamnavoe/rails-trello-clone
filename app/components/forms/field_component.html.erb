@@ -1,0 +1,7 @@
+<%= content_tag :div, class: div_class do %>
+  <%= form.label field, label, class: label_classes %>
+    <%= input %>
+  <% if help.present? %>
+    <p class="mt-2 text-sm text-gray-500"><%= help %></p>
+  <% end %>
+<% end %>
