@@ -1,22 +1,16 @@
-<h1>Boards</h1>
+ <% content_for :title do %>
+  Boards
+ <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="mt-2 flex mb-4">
+  <%= render Button::PrimaryComponent.new(text: "New Board",path: new_board_path) %>
+</div>
 
-  <tbody>
+<div class="container mx-auto rounded-lg bg-gray-100 p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
     <% @boards.each do |board| %>
-      <tr>
-        <td><%= link_to board.name, board %></td>
-      </tr>
+      <%= render LinkCardComponent.new(title: board.name, path: board_path(board)) %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
-
-<%= link_to 'New Board', new_board_path %>

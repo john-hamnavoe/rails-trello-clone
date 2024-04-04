@@ -1,18 +1,26 @@
+<%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+<% content_for :title do %>
+  <%= "Board: #{@board.name}" %>
+<% end %>
+<div class="mt-2 flex mb-4">
+  <%= render Button::SecondaryLinkComponent.new(text: "<- Boards",path: boards_path) %>
+</div>
+
 <%= turbo_stream_from @board %>
 
 <%= turbo_frame_tag "board" do %>
   <%= render @board %>
 <% end %>
-<br>
-<br>
-<%# link_to 'Add New List', new_board_list_path(@board) %>
-<%= turbo_frame_tag "new_list", src: new_board_list_path(@board), target: :_top %>
-<hr> 
+
 <!-- Lists container -->
 
-<div data-controller="lists" data-lists-id="<%= @board.id %>">
-  <section class="lists-container" data-lists-target="lists">
-    <%= render @board.lists.sort_by(&:position) %>
-  </section>
-</div>
-<!-- End of lists container -->
+<section data-controller="sortable" data-id="<%= @board.id %>" data-sortable-group-value="lists"  class="flex h-screen items-start overflow-x-auto" style="height: calc(100vh - 16.6rem);">
+  <% @board.lists.sort_by(&:position).each do |list| %>
+    <%= render "lists/list", list: list %>
+  <% end %>
+  <div class="mr-4 flex max-h-screen flex-shrink-0 flex-col rounded-md bg-gray-200 last:mr-0 filtered" style="width: 20rem;">
+    <%= turbo_frame_tag "new_list" do %>
+      <%= link_to "Add list...", new_board_list_path(@board), class: "w-full flex-shrink-0 block text-base font-normal bg-sky-200 hover:bg-sky-300 px-4 py-2  text-gray-600 rounded-md cursor-pointer transition duration-150 text-left"%>
+    <% end %>
+  </div>
+</section>

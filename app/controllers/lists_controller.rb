@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ListsController < ApplicationController
-  include ListsConcern
   before_action :set_list, only: %i[show edit update destroy]
   before_action :set_board, only: %i[new create]
 
@@ -32,12 +31,10 @@ class ListsController < ApplicationController
 
     respond_to do |format|
       if @list.save
-        format.turbo_stream { broadcast_lists_update }
-        format.html { redirect_to board_path(@list.board_id), notice: 'List was successfully created.' }
-        format.json { render :show, status: :created, location: @list }
+        format.html { redirect_to board_path(@list.board_id) }
       else
-        format.html { render :new }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("list-form", partial: "form", locals: {list: @list, board: @list.board, cancel_path: board_path(@list.board)}), status: :unprocessable_entity }
       end
     end
   end
@@ -47,7 +44,7 @@ class ListsController < ApplicationController
   def update
     respond_to do |format|
       if @list.update(list_params)
-        format.html { redirect_to @list, notice: 'List was successfully updated.' }
+        format.html { redirect_to board_path(@list.board_id) }
         format.json { render :show, status: :ok, location: @list }
       else
         format.html { render :edit }
@@ -61,25 +58,9 @@ class ListsController < ApplicationController
   def destroy
     @list.destroy
     respond_to do |format|
-      format.html { redirect_to lists_url, notice: 'List was successfully destroyed.' }
+      format.html { redirect_to lists_url, notice: "List was successfully destroyed." }
       format.json { head :no_content }
     end
-  end
-
-  def move_left
-    @list = List.find_by(id: params[:list_id])
-    @list.position -= 1
-    @list.save
-
-    broadcast_lists_update
-  end
-
-  def move_right
-    @list = List.find_by(id: params[:list_id])
-    @list.position += 1
-    @list.save
-
-    broadcast_lists_update
   end
 
   private

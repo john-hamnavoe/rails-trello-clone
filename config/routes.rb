@@ -1,18 +1,23 @@
 Rails.application.routes.draw do
   root "home#index"
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :tasks do 
-    patch "move"
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", :as => :rails_health_check
+
+  # Defines the root path route ("/")
+  # root "posts#index"
+
+  resources :tasks do
+    resource :position, only: [:update], controller: "tasks/position"
   end
-  resources :lists do 
+
+  resources :lists do
     resources :tasks
-    patch "move_left"
-    patch "move_right"
+    resource :position, only: [:update], controller: "lists/position"
   end
   resources :boards do
     resources :lists
   end
-  devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :home, only: [:index]
 end

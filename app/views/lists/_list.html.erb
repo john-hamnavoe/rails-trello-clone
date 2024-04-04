@@ -1,32 +1,18 @@
-<%= content_tag :div, id: dom_id(list) do %>
-  <div class="list">
-    <div class="text-center mt-1 mb-4">
-      <span>
-        <% unless list.position == 1 %>
-          <%= link_to "<", list_move_left_path(list.id), method: :patch, style:"float: left;text-decoration:none;"%>
-        <% end %>
-        <%= content_tag :span, id: dom_id(list), "data-id": list.id do %>
-          <%= turbo_stream_from list %>
-          <%= turbo_frame_tag "list" do %>
-            <%= link_to list.name, edit_list_path(list) %>
-          <% end %>
-        <% end %>        
-        <% unless list.position ==  list.board.lists.length %>
-          <%= link_to ">", list_move_right_path(list.id), method: :patch, style:"float: right;text-decoration:none;"%>
-        <% end %>
-      </span>
-    </div>    
+<%= content_tag :div, id: dom_id(list, "div"), data: {id: list.id, sortable_update_url: list_position_path(list) }, class:"mr-4 flex max-h-screen flex-shrink-0 flex-col rounded-md bg-gray-200 px-4 py-2 last:mr-0", style:"width: 20rem;" do %>
+  <%= turbo_frame_tag dom_id(list) do %>
+    <%= link_to list.name, edit_list_path(list), class: "text-lg font-bold text-gray-800 p-4" %>
+  <% end %>
 
-    <ul class="list-items">
-      <div data-controller="drag" data-drag-url="/tasks/:task_id/move" data-id="<%= list.id %>">
-        <% list.tasks.sort_by(&:position).each do |task| %>
-          <%= render "tasks/task", task: task %>
-        <% end %>
-      </div>
-    </ul>
-    <%= turbo_frame_tag "task" do %>    
-      <%= link_to "Add a task", new_list_task_path(list), class:"add-card-btn btn" %>
+  <ul data-controller="sortable" data-id="<%= list.id %>" data-sortable-group-value="tasks" class="flex-1 flex flex-col content-start overflow-y-auto px-2 py-1" style="padding-left: 0.6rem; padding-right: 0.6rem; padding-bottom: 0.5rem;">
+    <% list.tasks.sort_by(&:position).each do |task| %>
+      <%= render "tasks/task", task: task %>
     <% end %>
-  </div>
+  </ul>
+
+  <%= turbo_frame_tag dom_id(list, "add_task") do %>    
+    <%= link_to "Add task...", new_list_task_path(list), class:"w-full flex-shrink-0 block  text-base text-left font-normal bg-transparent hover:bg-gray-300 text-gray-700 hover:text-gray-900 px-2 py-1 rounded-md" %>
+  <% end %>
+
+
 <% end %>
- 
+

@@ -1,3 +1,5 @@
-<%= turbo_frame_tag "task" do %>
-  <%= render "form", task: @task %>
+<%= turbo_frame_tag dom_id(@task) do %>
+  <div class="bg-white rounded-lg shadow-md border-blue-200 border-2 p-2 max-w-xl">
+    <%= render "form", task: @task, cancel_path: board_path(@task.board), data: {} %>
+  </div>
 <% end %>

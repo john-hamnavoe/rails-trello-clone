@@ -1,4 +1,4 @@
-<%= form_with model: board, data: { turbo: false }  do |form| %>
+<%= form_with model: board, data: data, id: "board-form"  do |form| %>
   <% if board.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(board.errors.count, "error") %> prohibited this board from being saved:</h2>
@@ -11,12 +11,14 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
+  <%= render Forms::FieldComponent.new(form, :name) do |field| %>
+    <% field.with_input_text(autofocus: true) %>
+  <% end %>    
 
-  <div class="actions">
-    <%= form.submit class:"btn btn-primary"  %>
+  <div class="bg-white py-3 flex justify-between max-w-lg">
+    <div> 
+      <%= render Forms::ButtonSubmitComponent.new() %>    
+      <%= render Forms::ButtonCancelComponent.new(cancel_path) if cancel_path %>
+    </div>
   </div>
 <% end %>

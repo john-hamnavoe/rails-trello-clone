@@ -1,4 +1,4 @@
-  <%= form_with model: task, remote: false do |form| %>
+  <%= form_with model: task, data: data do |form| %>
     <% if task.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
@@ -11,13 +11,14 @@
       </div>
     <% end %>
     <%= form.hidden_field :list_id, value: task.list_id %>
-    <div class="field">
-      <%= form.label :name %>
-      <%= form.text_field :name, required: true, autofocus: true %>
-    </div>
+  <%= render Forms::FieldComponent.new(form, :name) do |field| %>
+    <% field.with_input_text(autofocus: true) %>
+  <% end %>    
 
-    <div class="actions">
-      <%= form.submit class:"btn btn-sm btn-primary" %>
-      <%= link_to "Cancel", task if form.object.persisted? %>
+  <div class="bg-white py-3 flex justify-between max-w-lg">
+    <div> 
+      <%= render Forms::ButtonSubmitComponent.new() %>    
+      <%= render Forms::ButtonCancelComponent.new(cancel_path) if cancel_path %>
     </div>
+  </div>
   <% end %>

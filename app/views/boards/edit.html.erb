@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "board" do %>
-  <h1>Editing Board</h1>
+  <div class="bg-white rounded-lg shadow-md border-blue-200 border-2 p-2 p-6 max-w-xl mb-4">
+    <h1 class="text-base font-semibold text-gray-900">Update Board Name</h1>
 
-  <%= render 'form', board: @board %>
-
-  <%= link_to 'Cancel', board_path(@board) %>
+    <%= render 'form', board: @board, cancel_path:  board_path(@board), data: { } %>
+  </div >
 <% end %>

@@ -1,5 +1,4 @@
 class TasksController < ApplicationController
-  include ListsConcern
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
@@ -30,8 +29,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        broadcast_lists_update
-        format.html { head :no_content }
+        format.html { redirect_to @task.board }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -45,7 +43,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to @task.board }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -59,29 +57,20 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to tasks_url, notice: "Task was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
-  def move
-    @task = Task.find(params[:task_id])
-    to_list = params[:to_list_id]
-    @task.list_id = to_list
-    @task.position = params[:position]
-    @task.save
+  private
 
-    broadcast_lists_update
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = Task.find(params[:id])
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:name, :list_id, :position)
-    end
+  # Only allow a list of trusted parameters through.
+  def task_params
+    params.require(:task).permit(:name, :list_id, :position)
+  end
 end

@@ -1,6 +1,7 @@
+<% content_for :title do %>
+  Create a new board
+<% end %>
 
-<h1>New Board</h1>
+<%= render 'form', board: @board, cancel_path: boards_path, data: { turbo: false} %>
 
-<%= render 'form', board: @board %>
 
-<%= link_to 'Back', boards_path %>
