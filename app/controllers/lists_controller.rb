@@ -34,7 +34,7 @@ class ListsController < ApplicationController
         format.html { redirect_to board_path(@list.board_id) }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("list-form", partial: "form", locals: {list: @list, board: @list.board, cancel_path: board_path(@list.board)}), status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("list-form", partial: "form", locals: {list: @list, board: @list.board, cancel_path: board_path(@list.board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
       end
     end
   end
@@ -49,6 +49,7 @@ class ListsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @list.errors, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("list-form", partial: "form", locals: {list: @list, board: @list.board, cancel_path: board_path(@list.board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
       end
     end
   end
