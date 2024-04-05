@@ -19,6 +19,7 @@
     <div> 
       <%= render Forms::ButtonSubmitComponent.new() %>    
       <%= render Forms::ButtonCancelComponent.new(cancel_path) if cancel_path %>
+      <%= render Forms::ButtonCancelModalComponent.new() unless cancel_path %>      
     </div>
   </div>
 <% end %>

@@ -71,3 +71,5 @@ end
 
 gem "acts_as_list"
 gem "view_component"
+
+gem "turbo_power", "~> 0.6.1"

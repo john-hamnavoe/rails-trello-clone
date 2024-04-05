@@ -19,8 +19,6 @@
     <%= render "lists/list", list: list %>
   <% end %>
   <div class="mr-4 flex max-h-screen flex-shrink-0 flex-col rounded-md bg-gray-200 last:mr-0 filtered" style="width: 20rem;">
-    <%= turbo_frame_tag "new_list" do %>
-      <%= link_to "Add list...", new_board_list_path(@board), class: "w-full flex-shrink-0 block text-base font-normal bg-sky-200 hover:bg-sky-300 px-4 py-2  text-gray-600 rounded-md cursor-pointer transition duration-150 text-left"%>
-    <% end %>
+    <%= link_to "Add list...", new_board_list_path(@board), data: { action: "click->modal#open", turbo_stream: "" }, id: "board-#{@board.id}-add-list", class: "w-full flex-shrink-0 block text-base font-normal bg-sky-200 hover:bg-sky-300 px-4 py-2  text-gray-600 rounded-md cursor-pointer transition duration-150 text-left"%>
   </div>
 </section>

@@ -1,0 +1,2 @@
+<%= turbo_stream.update "modal-title", "Edit list" %>
+<%= turbo_stream.update "modal-body", partial: "form", locals: { list: @list, board: @board, cancel_path: nil, data: {} } %>

@@ -4,8 +4,14 @@
 
 import { application } from "./application"
 
+import AutofocusController from "./autofocus_controller"
+application.register("autofocus", AutofocusController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
 
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)
