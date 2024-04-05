@@ -29,12 +29,12 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task.board }
-        format.json { render :show, status: :created, location: @task }
+        format.html {
+          redirect_to @task.board
+        }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("task-form", partial: "form", locals: {task: @task, board: @task.board, cancel_path: board_path(@task.board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("task-form", partial: "form", locals: {task: @task, board: @task.board, cancel_path: nil, data: {}}), status: :unprocessable_entity }
       end
     end
   end
@@ -45,10 +45,9 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to @task.board }
-        format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("task-form", partial: "form", locals: {task: @task, board: @task.board, cancel_path: nil, data: {}}), status: :unprocessable_entity }
       end
     end
   end

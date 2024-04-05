@@ -45,10 +45,8 @@ class ListsController < ApplicationController
     respond_to do |format|
       if @list.update(list_params)
         format.html { redirect_to board_path(@list.board_id) }
-        format.json { render :show, status: :ok, location: @list }
       else
         format.html { render :edit }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
         format.turbo_stream { render turbo_stream: turbo_stream.replace("list-form", partial: "form", locals: {list: @list, board: @list.board, cancel_path: board_path(@list.board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
       end
     end

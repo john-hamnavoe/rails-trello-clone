@@ -29,10 +29,8 @@ class BoardsController < ApplicationController
     respond_to do |format|
       if @board.save
         format.html { redirect_to @board }
-        format.json { render :show, status: :created, location: @board }
       else
         format.html { render :new }
-        format.json { render json: @board.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,7 +41,6 @@ class BoardsController < ApplicationController
     respond_to do |format|
       if @board.update(board_params)
         format.html { redirect_to @board }
-        format.json { render :show, status: :ok, location: @board }
       else
         format.html { render :edit }
         format.turbo_stream { render turbo_stream: turbo_stream.replace("board-form", partial: "form", locals: {board: @board, cancel_path: board_path(@board), data: {turbo_frame: :_top}}), status: :unprocessable_entity }
