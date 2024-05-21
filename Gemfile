@@ -70,4 +70,6 @@ group :test do
 end
 
 gem "acts_as_list"
+gem "sidekiq"
+gem "sidekiq-failures"
 gem "view_component"
