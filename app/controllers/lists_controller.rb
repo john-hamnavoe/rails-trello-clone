@@ -27,7 +27,7 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    @list = @board.lists.new(list_params)
+    @list = @board.lists.new(create_list_params)
 
     respond_to do |format|
       if @list.save
@@ -43,7 +43,7 @@ class ListsController < ApplicationController
   # PATCH/PUT /lists/1.json
   def update
     respond_to do |format|
-      if @list.update(list_params)
+      if @list.update(update_list_params)
         format.html { redirect_to board_path(@list.board_id) }
       else
         format.html { render :edit }
@@ -74,7 +74,11 @@ class ListsController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def list_params
+  def create_list_params
     params.require(:list).permit(:name, :position)
+  end
+
+  def update_list_params
+    params.require(:list).permit(:name)
   end
 end

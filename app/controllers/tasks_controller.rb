@@ -25,7 +25,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = Task.new(create_task_params)
 
     respond_to do |format|
       if @task.save
@@ -43,7 +43,7 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1.json
   def update
     respond_to do |format|
-      if @task.update(task_params)
+      if @task.update(update_task_params)
         format.html { redirect_to @task.board }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -70,7 +70,11 @@ class TasksController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def task_params
+  def create_task_params
     params.require(:task).permit(:name, :list_id, :position)
+  end
+
+  def update_task_params
+    params.require(:task).permit(:name)
   end
 end
