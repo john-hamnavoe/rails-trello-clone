@@ -1,3 +1,4 @@
+
 # README
 
 ## Introduction
@@ -14,7 +15,7 @@ So far the best I have come up with is that when adding/editing tasks and lists 
 
 * Ruby version 3.2.2
 
-* Rails Version 7.1
+* Rails Version 7.2
 
 * Stimulus
 
